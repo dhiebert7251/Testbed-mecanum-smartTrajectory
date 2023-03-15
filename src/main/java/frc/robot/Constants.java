@@ -59,4 +59,11 @@ public final class Constants {
     private static final int kEncoderResolution = 80; //CIMcoder (20 per channel quadrature) - TODO:is this correct?
     public static final double kDistancePerPulse = (Math.PI*kWheelDiameter)/kEncoderResolution;
   }
+
+  public static class AutoConstants {
+
+    public static final double kAutoDriveDistanceMeters = Units.inchesToMeters(60);
+    private static final double kAutoDriveSpeedScale = 0.50;
+    public static final double kAutoDriveSpeed = PhysicalConstants.kMaxSpeed * kAutoDriveSpeedScale; 
+  }
 }
