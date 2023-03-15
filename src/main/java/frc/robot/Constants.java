@@ -55,7 +55,7 @@ public final class Constants {
   
     public static final double kTrackWidth = Units.inchesToMeters(33.12); // from drawing
     public static final double kWheelBase = Units.inchesToMeters(19.945); // from drawing
-    private static final double kWheelRadius = kWheelDiameter/2; // meters
+    //private static final double kWheelRadius = kWheelDiameter/2; // meters
     private static final int kEncoderResolution = 80; //CIMcoder (20 per channel quadrature) - TODO:is this correct?
     public static final double kDistancePerPulse = (Math.PI*kWheelDiameter)/kEncoderResolution;
   }
