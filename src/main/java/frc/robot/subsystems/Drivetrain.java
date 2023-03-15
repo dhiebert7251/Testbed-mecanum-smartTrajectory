@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
@@ -17,8 +18,6 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   private final TalonSRX frontLeftDrive, frontRightDrive;
   private final VictorSPX backLeftDrive, backRightDrive;
-
-  private final MotorControllerGroup leftDriveGroup, rightDriveGroup;
 
   private final Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
 
@@ -41,9 +40,8 @@ public class Drivetrain extends SubsystemBase {
     frontLeftDrive.setInverted(DrivetrainConstants.kFrontLeftMotorInverted);
     backLeftDrive.setInverted(DrivetrainConstants.kBackLeftMotorInverted);
 
-    //leftDriveGroup = new MotorControllerGroup(frontLeftDrive, null)
-
-    
+    backLeftDrive.follow(frontLeftDrive);
+ 
 
     //right side
     frontRightDrive = new TalonSRX(DrivetrainConstants.kFrontRightMotorID);
@@ -54,6 +52,16 @@ public class Drivetrain extends SubsystemBase {
 
     frontRightDrive.configFactoryDefault();
     backRightDrive.configFactoryDefault();
+
+    frontRightDrive.setNeutralMode(NeutralMode.Brake);
+    backRightDrive.setNeutralMode(NeutralMode.Brake);
+
+    frontRightDrive.setInverted(DrivetrainConstants.kFrontRightMotorInverted);
+    backRightDrive.setInverted(DrivetrainConstants.kBackRightMotorInverted);
+
+    backRightDrive.follow(frontRightDrive);
+
+
   }
 
   @Override

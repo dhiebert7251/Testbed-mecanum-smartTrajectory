@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -39,5 +41,21 @@ public final class Constants {
     public static final int kBackRightEncoderB = 7
     ;
 
+
+  }
+
+  public static class PhysicalConstants {
+
+    public static final double kMotorFreeSpeed = 5330.0; //CIM motor
+    public static final double kDriveGearRatio = 1/12.75; //Toughbox Micro
+    public static final double kWheelDiameter = Units.inchesToMeters(8); //pneumatic wheels
+    //public static final double kWheelDiameter = Units.inchesToMeters(6); //meccanum or Hi-Tec traction wheels
+    public static final double kMaxSpeed = (kMotorFreeSpeed*kDriveGearRatio/60)*(Math.PI*kWheelDiameter); // meters per second
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
+  
+    private static final double kTrackWidth = Units.inchesToMeters(33.12); // from drawing
+    private static final double kWheelBase = Units.inchesToMeters(19.945); // from drawing
+    private static final double kWheelRadius = kWheelDiameter/2; // meters
+    private static final int kEncoderResolution = 80; //CIMcoder (20 per channel quadrature) - TODO:is this correct?
   }
 }
