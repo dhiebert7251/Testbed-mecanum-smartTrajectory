@@ -46,16 +46,17 @@ public final class Constants {
 
   public static class PhysicalConstants {
 
-    public static final double kMotorFreeSpeed = 5330.0; //CIM motor
-    public static final double kDriveGearRatio = 1/12.75; //Toughbox Micro
-    public static final double kWheelDiameter = Units.inchesToMeters(8); //pneumatic wheels
+    private static final double kMotorFreeSpeed = 5330.0; //CIM motor
+    private static final double kDriveGearRatio = 1/12.75; //Toughbox Micro
+    private static final double kWheelDiameter = Units.inchesToMeters(8); //pneumatic wheels
     //public static final double kWheelDiameter = Units.inchesToMeters(6); //meccanum or Hi-Tec traction wheels
     public static final double kMaxSpeed = (kMotorFreeSpeed*kDriveGearRatio/60)*(Math.PI*kWheelDiameter); // meters per second
     public static final double kMaxAngularSpeed = 2 * Math.PI; // one rotation per second
   
-    private static final double kTrackWidth = Units.inchesToMeters(33.12); // from drawing
-    private static final double kWheelBase = Units.inchesToMeters(19.945); // from drawing
+    public static final double kTrackWidth = Units.inchesToMeters(33.12); // from drawing
+    public static final double kWheelBase = Units.inchesToMeters(19.945); // from drawing
     private static final double kWheelRadius = kWheelDiameter/2; // meters
     private static final int kEncoderResolution = 80; //CIMcoder (20 per channel quadrature) - TODO:is this correct?
+    public static final double kDistancePerPulse = (Math.PI*kWheelDiameter)/kEncoderResolution;
   }
 }
