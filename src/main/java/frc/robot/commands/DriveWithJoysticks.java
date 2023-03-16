@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveWithJoysticks extends CommandBase {
@@ -30,7 +32,12 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.drive(m_forward.getAsDouble(), m_strafe.getAsDouble(), m_rotation.getAsDouble(), m_drive.getFieldRelative());
+    double xSpeed = MathUtil.applyDeadband(m_forward.getAsDouble(), OperatorConstants.kControllerDeadband);
+    double ySpeed = MathUtil.applyDeadband(m_strafe.getAsDouble(), OperatorConstants.kControllerDeadband);
+    double rot = MathUtil.applyDeadband(m_rotation.getAsDouble(), OperatorConstants.kControllerDeadband);
+
+
+    m_drive.drive(xSpeed, ySpeed, rot, m_drive.getFieldRelative());
   }
 
   // Called once the command ends or is interrupted.
