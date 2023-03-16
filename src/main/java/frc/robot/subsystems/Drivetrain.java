@@ -182,4 +182,8 @@ public class Drivetrain extends SubsystemBase {
   public double getTurnRate() {
     return -gyro.getRate();
   }
+
+  public boolean getFieldRelative() {
+    return gyro.isConnected();
+  }
 }

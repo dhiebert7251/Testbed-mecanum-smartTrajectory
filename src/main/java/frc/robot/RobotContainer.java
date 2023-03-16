@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.Auto_Complex;
@@ -13,12 +14,19 @@ import frc.robot.commands.Auto_DriveForward;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.subsystems.Drivetrain;
 
-import java.lang.ref.PhantomReference;
+import java.util.List;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -62,18 +70,21 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    
     m_driveTrain.setDefaultCommand(
         // Left stick robot position, field oriented
         // Right stick rotation
-        new RunCommand(
-            () ->
-                m_driveTrain.drive(
-                    -m_driverController.getLeftY(),
-                    -m_driverController.getLeftX(),
-                    -m_driverController.getRightX(),
-                    true),
-            m_driveTrain));
+        new DriveWithJoysticks(
+          m_driveTrain, 
+          () -> -m_driverController.getLeftY(),  //TODO:  should this be - ?
+          () -> m_driverController.getLeftX(),
+          () -> m_driverController.getRightX())
+      );
 
+    // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
+    m_chooser.addOption("Complex Auto", m_complexAuto);
+    m_chooser.addOption("Trajectory 1", trajectory1());
   }
 
   /**
@@ -110,9 +121,9 @@ public class RobotContainer {
     TrajectoryConfig config =
         new TrajectoryConfig(
                 PhysicalConstants.kMaxSpeed,
-                PhysicalConstants.kMaxAc)
+                PhysicalConstants.kMaxAccel)
             // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics);
+            .setKinematics(PhysicalConstants.kDriveKinematics);
 
     // An example trajectory to follow.  All units in meters.
     Trajectory exampleTrajectory =
@@ -128,9 +139,9 @@ public class RobotContainer {
     MecanumControllerCommand mecanumControllerCommand =
         new MecanumControllerCommand(
             exampleTrajectory,
-            m_robotDrive::getPose,
-            DriveConstants.kFeedforward,
-            DriveConstants.kDriveKinematics,
+            m_driveTrain::getPose,
+            DrivetrainConstants.kFeedforward,
+            PhysicalConstants.kDriveKinematics,
 
             // Position controllers
             new PIDController(AutoConstants.kPXController, 0, 0),
@@ -139,21 +150,21 @@ public class RobotContainer {
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints),
 
             // Needed for normalizing wheel speeds
-            AutoConstants.kMaxSpeedMetersPerSecond,
+            PhysicalConstants.kMaxSpeed,
 
             // Velocity PID's
-            new PIDController(DriveConstants.kPFrontLeftVel, 0, 0),
-            new PIDController(DriveConstants.kPRearLeftVel, 0, 0),
-            new PIDController(DriveConstants.kPFrontRightVel, 0, 0),
-            new PIDController(DriveConstants.kPRearRightVel, 0, 0),
-            m_robotDrive::getCurrentWheelSpeeds,
-            m_robotDrive::setDriveMotorControllersVolts, // Consumer for the output motor voltages
-            m_robotDrive);
+            new PIDController(DrivetrainConstants.kPFrontLeftVel, DrivetrainConstants.kIFrontLeftVel, DrivetrainConstants.kDFrontLeftVel),
+            new PIDController(DrivetrainConstants.kPRearLeftVel, DrivetrainConstants.kIRearLeftVel, DrivetrainConstants.kDRearLeftVel),
+            new PIDController(DrivetrainConstants.kPFrontRightVel, DrivetrainConstants.kIFrontRightVel, DrivetrainConstants.kDFrontRightVel), 
+            new PIDController(DrivetrainConstants.kPRearRightVel, DrivetrainConstants.kIRearRightVel, DrivetrainConstants.kDRearRightVel),
+            m_driveTrain::getCurrentWheelSpeeds,
+            m_driveTrain::setDriveMotorControllersVolts, // Consumer for the output motor voltages
+            m_driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+    m_driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
-    return mecanumControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return mecanumControllerCommand.andThen(() -> m_driveTrain.drive(0, 0, 0, false));
   }
 }
