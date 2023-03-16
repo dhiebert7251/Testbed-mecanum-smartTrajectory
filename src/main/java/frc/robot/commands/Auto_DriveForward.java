@@ -31,24 +31,29 @@ public class Auto_DriveForward extends CommandBase {
   @Override
   public void initialize() {
     m_drive.resetEncoders();
-    m_drive.arcadeDrive(m_speed, 0);
+    m_drive.drive(m_speed, 0,0, m_drive.getFieldRelative());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.arcadeDrive(m_speed, 0);
+    m_drive.drive(m_speed, 0,0, m_drive.getFieldRelative());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.arcadeDrive(0, 0);
+    m_drive.drive(0, 0, 0, false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_drive.getAverageEncoderDistance()) >= m_distance;
+    double avDistance = (m_drive.
+                            getCurrentWheelDistances().frontLeftMeters +
+                          m_drive.
+                            getCurrentWheelDistances().frontRightMeters)/2;
+
+    return Math.abs(avDistance) >= m_distance;
   }
 }
