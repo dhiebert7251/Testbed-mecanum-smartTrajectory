@@ -7,7 +7,9 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivetrain;
 
@@ -36,6 +38,15 @@ public class DriveWithJoysticks extends CommandBase {
     double ySpeed = MathUtil.applyDeadband(m_strafe.getAsDouble(), OperatorConstants.kControllerDeadband);
     double rot = MathUtil.applyDeadband(m_rotation.getAsDouble(), OperatorConstants.kControllerDeadband);
 
+    //shape the input
+    xSpeed = xSpeed*xSpeed;
+    ySpeed = ySpeed*ySpeed;
+    rot = rot*rot;
+
+    //apply speed limitter
+    xSpeed = xSpeed * DrivetrainConstants.kDriveSpeedScale;
+    ySpeed = ySpeed * DrivetrainConstants.kDriveSpeedScale;
+    rot = rot * DrivetrainConstants.kDriveSpeedScale;
 
     m_drive.drive(xSpeed, ySpeed, rot, m_drive.getFieldRelative());
   }

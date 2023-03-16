@@ -85,6 +85,8 @@ public final class Constants {
     public static final double kDFrontRightVel = 0.0;
     public static final double kDRearRightVel = 0.0;
 
+    public static final double kDriveSpeedScale = 1.0; //adjust to scale drive speed
+
   }
 
   public static class PhysicalConstants {
