@@ -5,12 +5,10 @@
 package frc.robot;
 
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.Auto_Complex;
 import frc.robot.commands.Auto_DriveForward;
-//import frc.robot.commands.Autos;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.subsystems.Drivetrain;
 
@@ -154,9 +152,9 @@ public class RobotContainer {
 
             // Velocity PID's
             new PIDController(AutoConstants.kPFrontLeftVel, AutoConstants.kIFrontLeftVel, AutoConstants.kDFrontLeftVel),
-            new PIDController(AutoConstants.kPRearLeftVel, AutoConstants.kIRearLeftVel, AutoConstants.kDRearLeftVel),
+            new PIDController(AutoConstants.kPBackLeftVel, AutoConstants.kIBackLeftVel, AutoConstants.kDBackLeftVel),
             new PIDController(AutoConstants.kPFrontRightVel, AutoConstants.kIFrontRightVel, AutoConstants.kDFrontRightVel), 
-            new PIDController(AutoConstants.kPRearRightVel, AutoConstants.kIRearRightVel,AutoConstants.kDRearRightVel),
+            new PIDController(AutoConstants.kPBackRightVel, AutoConstants.kIBackRightVel,AutoConstants.kDBackRightVel),
             m_driveTrain::getCurrentWheelSpeeds,
             m_driveTrain::setDriveMotorControllersVolts, // Consumer for the output motor voltages
             m_driveTrain);

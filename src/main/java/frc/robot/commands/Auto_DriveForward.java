@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class Auto_DriveForward extends CommandBase {
@@ -16,10 +17,16 @@ public class Auto_DriveForward extends CommandBase {
   private final double m_distance;
   private final double m_speed;
 
-  private final PIDController frontLeftPID = new PIDController(), frontRightPID, backLeftPID, backRightPID;
+  private final PIDController frontLeftPID = new PIDController(AutoConstants.kPFrontLeftVel, AutoConstants.kIFrontLeftVel, AutoConstants.kDFrontLeftVel);
+  private final PIDController frontRightPID = new PIDController(AutoConstants.kPFrontRightVel, AutoConstants.kIFrontRightVel, AutoConstants.kDFrontRightVel);
+  private final PIDController backLeftPID = new PIDController(AutoConstants.kPBackLeftVel, AutoConstants.kIBackLeftVel, AutoConstants.kDBackLeftVel);
+  private final PIDController backRightPID = new PIDController(AutoConstants.kPBackRightVel, AutoConstants.kIBackRightVel, AutoConstants.kDBackRightVel);
+
 
     // TODO: Gains are for example purposes only - must be determined for your own robot!
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 3);
+  
+  
   /**
    * Creates a new Auto_DriveForward.
    *
@@ -33,8 +40,8 @@ public class Auto_DriveForward extends CommandBase {
     m_drive = drive;
     addRequirements(m_drive);
 
-    
   }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -43,17 +50,20 @@ public class Auto_DriveForward extends CommandBase {
     m_drive.drive(m_speed, 0,0, m_drive.getFieldRelative());
   }
 
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_drive.drive(m_speed, 0,0, m_drive.getFieldRelative());
   }
 
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_drive.drive(0, 0, 0, false);
   }
+
 
   // Returns true when the command should end.
   @Override
@@ -65,6 +75,7 @@ public class Auto_DriveForward extends CommandBase {
 
     return Math.abs(avDistance) >= m_distance;
   }
+
 
     /**
    * Set the desired speeds for each wheel.
@@ -78,21 +89,23 @@ public class Auto_DriveForward extends CommandBase {
     final double backRightFeedforward = m_feedforward.calculate(speeds.rearRightMetersPerSecond);
 
     final double frontLeftOutput =
-        m_frontLeftPIDController.calculate(
-            m_frontLeftEncoder.getRate(), speeds.frontLeftMetersPerSecond);
-    final double frontRightOutput =
-        m_frontRightPIDController.calculate(
-            m_frontRightEncoder.getRate(), speeds.frontRightMetersPerSecond);
-    final double backLeftOutput =
-        m_backLeftPIDController.calculate(
-            m_backLeftEncoder.getRate(), speeds.rearLeftMetersPerSecond);
-    final double backRightOutput =
-        m_backRightPIDController.calculate(
-            m_backRightEncoder.getRate(), speeds.rearRightMetersPerSecond);
+        frontLeftPID.calculate(
+            m_drive.getFrontLeftEncoder().getRate(), speeds.frontLeftMetersPerSecond);
 
-    m_frontLeftMotor.setVoltage(frontLeftOutput + frontLeftFeedforward);
-    m_frontRightMotor.setVoltage(frontRightOutput + frontRightFeedforward);
-    m_backLeftMotor.setVoltage(backLeftOutput + backLeftFeedforward);
-    m_backRightMotor.setVoltage(backRightOutput + backRightFeedforward);
+    final double frontRightOutput =
+        frontRightPID.calculate(
+            m_drive.getFrontRightEncoder().getRate(), speeds.frontRightMetersPerSecond);
+
+    final double backLeftOutput =
+        backLeftPID.calculate(
+            m_drive.getBackLeftEncoder().getRate(), speeds.rearLeftMetersPerSecond);
+    final double backRightOutput =
+        backRightPID.calculate(
+            m_drive.getBackRightEncoder().getRate(), speeds.rearRightMetersPerSecond);
+
+    frontLeftDrive.setVoltage(frontLeftOutput + frontLeftFeedforward);
+    frontRightDrive.setVoltage(frontRightOutput + frontRightFeedforward);
+    backLeftDrive.setVoltage(backLeftOutput + backLeftFeedforward);
+    backRightDrive.setVoltage(backRightOutput + backRightFeedforward);
   }
 }

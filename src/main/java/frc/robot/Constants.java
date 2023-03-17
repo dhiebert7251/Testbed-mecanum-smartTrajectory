@@ -114,6 +114,11 @@ public final class Constants {
     public static final double kPYController = 0.5;
     public static final double kPThetaController = 0.5;
 
+    // Constraint for the motion profilied robot angle controller
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+    new TrapezoidProfile.Constraints(
+        PhysicalConstants.kMaxAngularSpeed, PhysicalConstants.kMaxAngularAccel);
+
     //TODO: adjust velocity PID values
     public static final double kPDriveVel = 8.5; //value seems very high
     public static final double kIDriveVel = 0.0;
@@ -124,18 +129,18 @@ new SimpleMotorFeedforward(1, 0.8, 0.15);
 
 // Example value only - as above, this must be tuned for your drive!
 public static final double kPFrontLeftVel = 0.5;
-public static final double kPRearLeftVel = 0.5;
+public static final double kPBackLeftVel = 0.5;
 public static final double kPFrontRightVel = 0.5;
-public static final double kPRearRightVel = 0.5;
+public static final double kPBackRightVel = 0.5;
 
 public static final double kIFrontLeftVel = 0.0;
-public static final double kIRearLeftVel = 0.0;
+public static final double kIBackLeftVel = 0.0;
 public static final double kIFrontRightVel = 0.0;
-public static final double kIRearRightVel = 0.0;
+public static final double kIBackRightVel = 0.0;
 
 public static final double kDFrontLeftVel = 0.0;
-public static final double kDRearLeftVel = 0.0;
+public static final double kDBackLeftVel = 0.0;
 public static final double kDFrontRightVel = 0.0;
-public static final double kDRearRightVel = 0.0;
+public static final double kDBackRightVel = 0.0;
   }
 }
