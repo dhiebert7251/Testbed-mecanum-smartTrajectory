@@ -66,24 +66,7 @@ public final class Constants {
     // These characterization values MUST be determined either experimentally or theoretically
     // for *your* robot's drive.
     // The SysId tool provides a convenient method for obtaining these values for your robot.
-    public static final SimpleMotorFeedforward kFeedforward =
-        new SimpleMotorFeedforward(1, 0.8, 0.15);
 
-    // Example value only - as above, this must be tuned for your drive!
-    public static final double kPFrontLeftVel = 0.5;
-    public static final double kPRearLeftVel = 0.5;
-    public static final double kPFrontRightVel = 0.5;
-    public static final double kPRearRightVel = 0.5;
-
-    public static final double kIFrontLeftVel = 0.0;
-    public static final double kIRearLeftVel = 0.0;
-    public static final double kIFrontRightVel = 0.0;
-    public static final double kIRearRightVel = 0.0;
-
-    public static final double kDFrontLeftVel = 0.0;
-    public static final double kDRearLeftVel = 0.0;
-    public static final double kDFrontRightVel = 0.0;
-    public static final double kDRearRightVel = 0.0;
 
     public static final double kDriveSpeedScale = 1.0; //adjust to scale drive speed
 
@@ -136,9 +119,23 @@ public final class Constants {
     public static final double kIDriveVel = 0.0;
     public static final double kDDriveVel = 0.0;
 
-    // Constraint for the motion profilied robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-        new TrapezoidProfile.Constraints(
-            PhysicalConstants.kMaxAngularSpeed, PhysicalConstants.kMaxAngularAccel);
+public static final SimpleMotorFeedforward kFeedforward =
+new SimpleMotorFeedforward(1, 0.8, 0.15);
+
+// Example value only - as above, this must be tuned for your drive!
+public static final double kPFrontLeftVel = 0.5;
+public static final double kPRearLeftVel = 0.5;
+public static final double kPFrontRightVel = 0.5;
+public static final double kPRearRightVel = 0.5;
+
+public static final double kIFrontLeftVel = 0.0;
+public static final double kIRearLeftVel = 0.0;
+public static final double kIFrontRightVel = 0.0;
+public static final double kIRearRightVel = 0.0;
+
+public static final double kDFrontLeftVel = 0.0;
+public static final double kDRearLeftVel = 0.0;
+public static final double kDFrontRightVel = 0.0;
+public static final double kDRearRightVel = 0.0;
   }
 }

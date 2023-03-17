@@ -140,7 +140,7 @@ public class RobotContainer {
         new MecanumControllerCommand(
             exampleTrajectory,
             m_driveTrain::getPose,
-            DrivetrainConstants.kFeedforward,
+            AutoConstants.kFeedforward,
             PhysicalConstants.kDriveKinematics,
 
             // Position controllers
@@ -153,10 +153,10 @@ public class RobotContainer {
             PhysicalConstants.kMaxSpeed,
 
             // Velocity PID's
-            new PIDController(DrivetrainConstants.kPFrontLeftVel, DrivetrainConstants.kIFrontLeftVel, DrivetrainConstants.kDFrontLeftVel),
-            new PIDController(DrivetrainConstants.kPRearLeftVel, DrivetrainConstants.kIRearLeftVel, DrivetrainConstants.kDRearLeftVel),
-            new PIDController(DrivetrainConstants.kPFrontRightVel, DrivetrainConstants.kIFrontRightVel, DrivetrainConstants.kDFrontRightVel), 
-            new PIDController(DrivetrainConstants.kPRearRightVel, DrivetrainConstants.kIRearRightVel, DrivetrainConstants.kDRearRightVel),
+            new PIDController(AutoConstants.kPFrontLeftVel, AutoConstants.kIFrontLeftVel, AutoConstants.kDFrontLeftVel),
+            new PIDController(AutoConstants.kPRearLeftVel, AutoConstants.kIRearLeftVel, AutoConstants.kDRearLeftVel),
+            new PIDController(AutoConstants.kPFrontRightVel, AutoConstants.kIFrontRightVel, AutoConstants.kDFrontRightVel), 
+            new PIDController(AutoConstants.kPRearRightVel, AutoConstants.kIRearRightVel,AutoConstants.kDRearRightVel),
             m_driveTrain::getCurrentWheelSpeeds,
             m_driveTrain::setDriveMotorControllersVolts, // Consumer for the output motor voltages
             m_driveTrain);
