@@ -118,6 +118,14 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  public void autoDrive(double frontLeftVolts, double frontRightVolts, double backLeftVolts, double backRightVolts) {
+    frontLeftDrive.setVoltage(frontLeftVolts);
+    backLeftDrive.setVoltage(backLeftVolts);
+    frontRightDrive.setVoltage(frontRightVolts);
+    backRightDrive.setVoltage(backRightVolts);
+  }
+
+
     /** Sets the drive MotorController to a voltage. */
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
       frontLeftDrive.setVoltage(volts.frontLeftVoltage);

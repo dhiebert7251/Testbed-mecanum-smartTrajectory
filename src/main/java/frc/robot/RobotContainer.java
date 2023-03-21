@@ -7,8 +7,6 @@ package frc.robot;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.commands.Auto_Complex;
-import frc.robot.commands.Auto_DriveForward;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.subsystems.Drivetrain;
 
@@ -39,14 +37,6 @@ public class RobotContainer {
   private final Drivetrain m_driveTrain = new Drivetrain();
 
   // Commands are defined here...
-  // A simple auto routine that drives forward a specified distance, and then stops.
-  private final Command m_simpleAuto =
-      new Auto_DriveForward(
-          AutoConstants.kAutoDriveDistanceMeters, AutoConstants.kAutoDriveSpeed, m_driveTrain);
-
-  // A complex auto routine that drives forward, drops a hatch, and then drives backward.
-  private final Command m_complexAuto = 
-      new Auto_Complex(m_driveTrain);
 
 
   // Controllers
@@ -80,9 +70,8 @@ public class RobotContainer {
       );
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Simple Auto", m_simpleAuto);
-    m_chooser.addOption("Complex Auto", m_complexAuto);
-    m_chooser.addOption("Trajectory 1", trajectory1());
+    m_chooser.setDefaultOption("Trajectory 1", trajectory1());
+    //m_chooser.addOption();
   }
 
   /**
@@ -146,18 +135,16 @@ public class RobotContainer {
             new PIDController(AutoConstants.kPYController, 0, 0),
             new ProfiledPIDController(
                 AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints),
-
-            // Needed for normalizing wheel speeds
-            PhysicalConstants.kMaxSpeed,
-
-            // Velocity PID's
-            new PIDController(AutoConstants.kPFrontLeftVel, AutoConstants.kIFrontLeftVel, AutoConstants.kDFrontLeftVel),
-            new PIDController(AutoConstants.kPBackLeftVel, AutoConstants.kIBackLeftVel, AutoConstants.kDBackLeftVel),
-            new PIDController(AutoConstants.kPFrontRightVel, AutoConstants.kIFrontRightVel, AutoConstants.kDFrontRightVel), 
-            new PIDController(AutoConstants.kPBackRightVel, AutoConstants.kIBackRightVel,AutoConstants.kDBackRightVel),
-            m_driveTrain::getCurrentWheelSpeeds,
-            m_driveTrain::setDriveMotorControllersVolts, // Consumer for the output motor voltages
-            m_driveTrain);
+                // Needed for normalizing wheel speeds
+                PhysicalConstants.kMaxSpeed,
+                // Velocity PID's
+                new PIDController(AutoConstants.kPFrontLeftVel, AutoConstants.kIFrontLeftVel, AutoConstants.kDFrontLeftVel),
+                new PIDController(AutoConstants.kPBackLeftVel, AutoConstants.kIBackLeftVel, AutoConstants.kDBackLeftVel),
+                new PIDController(AutoConstants.kPFrontRightVel, AutoConstants.kIFrontRightVel, AutoConstants.kDFrontRightVel), 
+                new PIDController(AutoConstants.kPBackRightVel, AutoConstants.kIBackRightVel,AutoConstants.kDBackRightVel),
+                m_driveTrain::getCurrentWheelSpeeds,
+                m_driveTrain::setDriveMotorControllersVolts, // Consumer for the output motor voltages
+                m_driveTrain);
 
     // Reset odometry to the starting pose of the trajectory.
     m_driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
