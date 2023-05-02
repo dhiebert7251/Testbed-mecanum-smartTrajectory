@@ -31,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
   private final WPI_VictorSPX backLeftDrive = new WPI_VictorSPX(DrivetrainConstants.kBackLeftMotorID);
   private final WPI_VictorSPX backRightDrive = new WPI_VictorSPX(DrivetrainConstants.kBackRightMotorID);
 
-  private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backLeftDrive);
+  private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
 
   private final Encoder frontLeftEncoder = new Encoder(DrivetrainConstants.kFrontLeftEncoderA, DrivetrainConstants.kFrontLeftEncoderB, false, EncodingType.k4X);
   private final Encoder backLeftEncoder = new Encoder(DrivetrainConstants.kBackLeftEncoderA, DrivetrainConstants.kBackLeftEncoderB, false, EncodingType.k4X);
