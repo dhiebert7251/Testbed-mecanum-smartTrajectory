@@ -212,7 +212,7 @@ public class Drivetrain extends SubsystemBase {
   public void telemetry(){
     //Shuffleboard.selectTab("DriveTab");
     //Shuffleboard.selectTab("GyroTab");
-    //Shuffleboard.selectTab("PowerTab");public void telemetry(){
+    //Shuffleboard.selectTab("PowerTab");
     
     // Update telemetry 
     Shuffleboard.update();
@@ -388,7 +388,7 @@ public class Drivetrain extends SubsystemBase {
       .add("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
       //SmartDashboard.putString("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
 
-      
+
   }
   
 }
