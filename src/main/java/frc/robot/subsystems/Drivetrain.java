@@ -18,6 +18,9 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
@@ -89,8 +92,8 @@ public class Drivetrain extends SubsystemBase {
     // Update the odometry in the periodic block
     odometry.update(gyro.getRotation2d(), getCurrentWheelDistances());
 
-    SmartDashboard.putNumber("Robot Heading", getHeading());
-    SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+
+    telemetry();
   }
 
   public Pose2d getPose() {
@@ -205,4 +208,187 @@ public class Drivetrain extends SubsystemBase {
   public boolean getFieldRelative() {
     return gyro.isConnected();
   }
+
+  public void telemetry(){
+    //Shuffleboard.selectTab("DriveTab");
+    //Shuffleboard.selectTab("GyroTab");
+    //Shuffleboard.selectTab("PowerTab");public void telemetry(){
+    
+    // Update telemetry 
+    Shuffleboard.update();
+
+    //Encoder Tab entries
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .add("Raw", frontLeftEncoder.getRaw());
+      //SmartDashboard.putNumber("Left Encoder Raw", frontLeftEncoder.getRaw());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .add("Distance Per Pulse", frontLeftEncoder.getDistancePerPulse());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .add("Distance", frontLeftEncoder.getDistance());
+      //SmartDashboard.putNumber("Left Encoder Distance", frontLeftEncoder.getDistance());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .add("Rate", frontLeftEncoder.getRate());
+      //SmartDashboard.putNumber("Left Encoder Rate", frontLeftEncoder.getRate());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .add("Forward?", frontLeftEncoder.getDirection())
+      .withWidget(BuiltInWidgets.kToggleSwitch);
+      //SmartDashboard.putBoolean("Left Encoder Forward", frontLeftEncoder.getDirection()); //is this useful?
+
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+      .add("Raw", frontRightEncoder.getRaw());
+      //SmartDashboard.putNumber("Right Encoder Raw", frontRightEncoder.getRaw());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+      .add("Distance Per Pulse", frontRightEncoder.getDistancePerPulse());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+      .add("Distance", frontRightEncoder.getDistance());
+      //SmartDashboard.putNumber("Right Encoder Distance", frontRightEncoder.getDistance());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+      .add("Rate", frontRightEncoder.getRate());
+      //SmartDashboard.putNumber("Right Encoder Rate", frontRightEncoder.getRate());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+      .add("Forward?", frontRightEncoder.getDirection())
+      .withWidget(BuiltInWidgets.kToggleSwitch);
+      //SmartDashboard.putBoolean("Right Encoder Forward", frontRightEncoder.getDirection()); //is this useful?
+
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Left Encoder", BuiltInLayouts.kList)
+      .add("Raw", backLeftEncoder.getRaw());
+      //SmartDashboard.putNumber("Back Left Encoder Raw", backLeftEncoder.getRaw());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Left Encoder", BuiltInLayouts.kList)
+      .add("Distance Per Pulse", backLeftEncoder.getDistancePerPulse());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Left Encoder", BuiltInLayouts.kList)
+      .add("Distance", backLeftEncoder.getDistance());
+      //SmartDashboard.putNumber("Back Left Encoder Distance", backLeftEncoder.getDistance());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Left Encoder", BuiltInLayouts.kList)
+      .add("Rate", backLeftEncoder.getRate());
+      //SmartDashboard.putNumber("Back Left Encoder Rate", backLeftEncoder.getRate());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Left Encoder", BuiltInLayouts.kList)
+      .add("Forward?", backLeftEncoder.getDirection())
+      .withWidget(BuiltInWidgets.kToggleSwitch);
+      //SmartDashboard.putBoolean("Back Left Encoder Forward", backLeftEncoder.getDirection()); //is this useful?
+
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Right Encoder", BuiltInLayouts.kList)
+      .add("Raw", backRightEncoder.getRaw());
+      //SmartDashboard.putNumber("Back Right Encoder Raw", backRightEncoder.getRaw());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Right Encoder", BuiltInLayouts.kList)
+      .add("Distance Per Pulse", backRightEncoder.getDistancePerPulse());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Right Encoder", BuiltInLayouts.kList)
+      .add("Distance", backRightEncoder.getDistance());
+      //SmartDashboard.putNumber("Back Right Encoder Distance", backRightEncoder.getDistance());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Right Encoder", BuiltInLayouts.kList)
+      .add("Rate", backRightEncoder.getRate());
+      //SmartDashboard.putNumber("Back Right Encoder Rate", backRightEncoder.getRate());
+    Shuffleboard.getTab("EncoderTab")
+      .getLayout("Back Right Encoder", BuiltInLayouts.kList)
+      .add("Forward?", backRightEncoder.getDirection())
+      .withWidget(BuiltInWidgets.kToggleSwitch);
+      //SmartDashboard.putBoolean("Back Right Encoder Forward", backRightEncoder.getDirection()); //is this useful?
+
+
+    //Gyro tab entries
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Heading", BuiltInLayouts.kGrid)
+      .add("Angle", gyro.getAngle())
+      .withWidget(BuiltInWidgets.kDial);
+      //SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());\
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Heading", BuiltInLayouts.kGrid)
+      .add("Heading", getHeading())
+      .withWidget(BuiltInWidgets.kGyro);
+    
+    Shuffleboard.getTab("GyroTab")
+      .add("Gyro Rotation Rate", gyro.getRate());
+      //SmartDashboard.putNumber("Gyro Rotation Rate", gyro.getRate());
+
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Displacement", BuiltInLayouts.kGrid)
+      .add("X", gyro.getDisplacementX());
+      //SmartDashboard.putNumber("Gyro Displacement X", gyro.getDisplacementX());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Displacement", BuiltInLayouts.kGrid)
+      .add("Y", gyro.getDisplacementY());
+      //SmartDashboard.putNumber("Gyro Displacement Y", gyro.getDisplacementY());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Displacement", BuiltInLayouts.kGrid)
+      .add("Z", gyro.getDisplacementZ());
+      //SmartDashboard.putNumber("Gyro Displacement Z", gyro.getDisplacementZ());
+
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("YPR", BuiltInLayouts.kGrid)
+      .add("Gyro Yaw", gyro.getYaw());
+      //SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("YPR", BuiltInLayouts.kGrid)
+      .add("Gyro Pitch", gyro.getPitch());
+      //SmartDashboard.putNuyro Pitch", gyro.getPitch());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("YPR", BuiltInLayouts.kGrid)
+      .add("Gyro Roll", gyro.getRoll());
+      //SmartDashboard.putNumber("Gmber("Gyro Roll", gyro.getRoll());
+
+
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Velocity")
+      .add("X", gyro.getVelocityX());
+      //SmartDashboard.putNumber("Gyro Velocity X", gyro.getVelocityX());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Velocity")
+      .add("Y", gyro.getVelocityY());
+      //SmartDashboard.putNumber("Gyro Velocity Y", gyro.getVelocityY());
+    Shuffleboard.getTab("GyroTab")
+      .getLayout("Velocity")
+      .add("Z", gyro.getVelocityZ());
+      //SmartDashboard.putNumber("Gyro Velocity Z", gyro.getVelocityZ());
+
+    //Drive Tab entries
+    Shuffleboard.getTab("DriveTab")
+      .getLayout("Controllers",BuiltInLayouts.kGrid)
+      .add("FL", frontLeftDrive)
+      .withWidget(BuiltInWidgets.kMotorController);
+    Shuffleboard.getTab("DriveTab")
+      .getLayout("Controllers",BuiltInLayouts.kGrid)
+      .add("BL", backLeftDrive)
+      .withWidget(BuiltInWidgets.kMotorController);
+    Shuffleboard.getTab("DriveTab")
+      .getLayout("Controllers",BuiltInLayouts.kGrid)
+      .add("FR", frontRightDrive)
+      .withWidget(BuiltInWidgets.kMotorController);
+    Shuffleboard.getTab("DriveTab")
+      .getLayout("Controllers",BuiltInLayouts.kGrid)
+      .add("BR", backRightDrive)
+      .withWidget(BuiltInWidgets.kMotorController);
+
+    
+    //Field Tab entries
+ 
+
+    Shuffleboard.getTab("FieldTab")
+      .add("Robot Location", getPose().getTranslation().toString());
+      //SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+
+    Shuffleboard.getTab("FieldTab")
+      .add("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
+      //SmartDashboard.putString("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
+
+      
+  }
+  
 }
