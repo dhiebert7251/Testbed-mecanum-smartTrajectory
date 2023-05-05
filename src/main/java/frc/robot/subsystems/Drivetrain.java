@@ -371,6 +371,10 @@ public class Drivetrain extends SubsystemBase {
 
     //Drive Tab entries
     ShuffleboardTab driveTab = Shuffleboard.getTab("DriveTab");
+
+    driveTab
+      .add("Mecanum Drive",mecanumDrive).withPosition(8,0);
+
     ShuffleboardLayout controllersLayout = 
       driveTab.getLayout("Controllers",BuiltInLayouts.kGrid).withPosition(0,0).withSize(2,2);
     

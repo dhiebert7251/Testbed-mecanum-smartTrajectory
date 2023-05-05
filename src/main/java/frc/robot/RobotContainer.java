@@ -12,6 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 
 import java.util.List;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -58,6 +59,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    //Camera
+    CameraServer.startAutomaticCapture();
 
     
     m_driveTrain.setDefaultCommand(
