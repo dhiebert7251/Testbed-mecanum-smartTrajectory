@@ -35,6 +35,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  Thread m_visionThread;
+
+
   // Subsystems are defined here...
   private final Drivetrain m_driveTrain = new Drivetrain();
 
@@ -61,7 +65,7 @@ public class RobotContainer {
     configureBindings();
 
     //Camera
-    CameraServer.startAutomaticCapture();
+    //driverCam = CameraServer.startAutomaticCapture();
 
     
     m_driveTrain.setDefaultCommand(
@@ -157,4 +161,45 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return mecanumControllerCommand.andThen(() -> m_driveTrain.drive(0, 0, 0, false));
   }
+/* 
+  public void cameraProcess(){
+    m_visionThread =
+        new Thread(
+            () -> {
+              // Get the Axis camera from CameraServer
+              AxisCamera camera = CameraServer.addAxisCamera("axis-camera.local");
+              // Set the resolution
+              camera.setResolution(640, 480);
+
+              // Get a CvSink. This will capture Mats from the camera
+              CvSink cvSink = CameraServer.getVideo();
+              // Setup a CvSource. This will send images back to the Dashboard
+              CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
+
+              // Mats are very memory expensive. Lets reuse this Mat.
+              Mat mat = new Mat();
+
+              // This cannot be 'true'. The program will never exit if it is. This
+              // lets the robot stop this thread when restarting robot code or
+              // deploying.
+              while (!Thread.interrupted()) {
+                // Tell the CvSink to grab a frame from the camera and put it
+                // in the source mat.  If there is an error notify the output.
+                if (cvSink.grabFrame(mat) == 0) {
+                  // Send the output the error.
+                  outputStream.notifyError(cvSink.getError());
+                  // skip the rest of the current iteration
+                  continue;
+                }
+                // Put a rectangle on the image
+                Imgproc.rectangle(
+                    mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
+                // Give the output stream a new image to display
+                outputStream.putFrame(mat);
+              }
+            });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
+  }
+  */
 }

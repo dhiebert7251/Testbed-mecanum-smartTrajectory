@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
@@ -116,11 +117,26 @@ public class Drivetrain extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    
+    /*
+     * disable fieldRelative for testing purposes
+     * 
+  
     if (fieldRelative) {
       mecanumDrive.driveCartesian(xSpeed, ySpeed, rot, gyro.getRotation2d());
     } else {
       mecanumDrive.driveCartesian(xSpeed, ySpeed, rot);
     }
+
+
+     */
+
+    mecanumDrive.driveCartesian(xSpeed, ySpeed, rot);
+
+    SmartDashboard.putNumber("Drive X Speed", xSpeed);
+    SmartDashboard.putNumber("Drive Y Speed", ySpeed);
+    SmartDashboard.putNumber("Drive Rotation", rot);
+    SmartDashboard.putBoolean("Drive Field Relative", fieldRelative);
   }
 
   public void autoDrive(double frontLeftVolts, double frontRightVolts, double backLeftVolts, double backRightVolts) {
@@ -128,6 +144,11 @@ public class Drivetrain extends SubsystemBase {
     backLeftDrive.setVoltage(backLeftVolts);
     frontRightDrive.setVoltage(frontRightVolts);
     backRightDrive.setVoltage(backRightVolts);
+
+    SmartDashboard.putNumber("AutoDrive FL Volts", frontLeftVolts);
+    SmartDashboard.putNumber("AutoDrive BL Volts", backLeftVolts);
+    SmartDashboard.putNumber("Autodrive FR Volts", frontRightVolts);
+    SmartDashboard.putNumber("AutoDrive BR Volts", backRightVolts);
   }
 
 
@@ -137,6 +158,11 @@ public class Drivetrain extends SubsystemBase {
       backLeftDrive.setVoltage(volts.rearLeftVoltage);
       frontRightDrive.setVoltage(volts.frontRightVoltage);
       backRightDrive.setVoltage(volts.rearRightVoltage);
+
+      SmartDashboard.putNumber("setDriveMotor FL Volts", volts.frontLeftVoltage);
+      SmartDashboard.putNumber("setDriveMotor BL Volts", volts.rearLeftVoltage);
+      SmartDashboard.putNumber("setDriveMotor FR Volts", volts.frontRightVoltage);
+      SmartDashboard.putNumber("setDriveMotor BR Volts", volts.rearRightVoltage);
     }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -226,18 +252,18 @@ public class Drivetrain extends SubsystemBase {
              .withPosition(0, 0);
     
         encoderFLLayout
-          .add("Raw", frontLeftEncoder.getRaw());
+          .add("Front Left Raw", frontLeftEncoder.getRaw());
           //SmartDashboard.putNumber("Left Encoder Raw", frontLeftEncoder.getRaw());
         encoderFLLayout
-          .add("Distance Per Pulse", frontLeftEncoder.getDistancePerPulse());
+          .add("FL Distance Per Pulse", frontLeftEncoder.getDistancePerPulse());
         encoderFLLayout
-          .add("Distance", frontLeftEncoder.getDistance());
+          .add("FL Distance", frontLeftEncoder.getDistance());
           //SmartDashboard.putNumber("Left Encoder Distance", frontLeftEncoder.getDistance());
         encoderFLLayout
-          .add("Rate", frontLeftEncoder.getRate());
+          .add("FL Rate", frontLeftEncoder.getRate());
           //SmartDashboard.putNumber("Left Encoder Rate", frontLeftEncoder.getRate());
         encoderFLLayout
-          .add("Forward?", frontLeftEncoder.getDirection())
+          .add("FL Forward?", frontLeftEncoder.getDirection())
           .withWidget(BuiltInWidgets.kToggleSwitch);
           //SmartDashboard.putBoolean("Left Encoder Forward", frontLeftEncoder.getDirection()); //is this useful?
 
@@ -246,18 +272,18 @@ public class Drivetrain extends SubsystemBase {
                  .withPosition(2, 0);
 
         encoderFRLayout
-          .add("Raw", frontRightEncoder.getRaw());
+          .add("FR Raw", frontRightEncoder.getRaw());
           //SmartDashboard.putNumber("Right Encoder Raw", frontRightEncoder.getRaw());
         encoderFRLayout
-         .add("Distance Per Pulse", frontRightEncoder.getDistancePerPulse());
+         .add("FR Distance Per Pulse", frontRightEncoder.getDistancePerPulse());
         encoderFRLayout
-          .add("Distance", frontRightEncoder.getDistance());
+          .add("FR Distance", frontRightEncoder.getDistance());
           //SmartDashboard.putNumber("Right Encoder Distance", frontRightEncoder.getDistance());
         encoderFRLayout
-          .add("Rate", frontRightEncoder.getRate());
+          .add("FR Rate", frontRightEncoder.getRate());
           //SmartDashboard.putNumber("Right Encoder Rate", frontRightEncoder.getRate());
         encoderFRLayout
-          .add("Forward?", frontRightEncoder.getDirection())
+          .add("FR Forward?", frontRightEncoder.getDirection())
           .withWidget(BuiltInWidgets.kToggleSwitch);
           //SmartDashboard.putBoolean("Right Encoder Forward", frontRightEncoder.getDirection()); //is this useful?
 
@@ -266,7 +292,7 @@ public class Drivetrain extends SubsystemBase {
                 .withPosition(4, 0);
     
         encoderBLLayout      
-          .add("Raw", backLeftEncoder.getRaw());
+          .add("BL Raw", backLeftEncoder.getRaw());
           //SmartDashboard.putNumber("Back Left Encoder Raw", backLeftEncoder.getRaw());
         encoderBLLayout
           .add("Distance Per Pulse", backLeftEncoder.getDistancePerPulse());
@@ -286,18 +312,18 @@ public class Drivetrain extends SubsystemBase {
                 .withPosition(6, 0);
         
         encoderBRLayout        
-          .add("Raw", backRightEncoder.getRaw());
+          .add("BR Raw", backRightEncoder.getRaw());
           //SmartDashboard.putNumber("Back Right Encoder Raw", backRightEncoder.getRaw());
         encoderBRLayout 
-          .add("Distance Per Pulse", backRightEncoder.getDistancePerPulse());
+          .add("BR Distance Per Pulse", backRightEncoder.getDistancePerPulse());
         encoderBRLayout 
-          .add("Distance", backRightEncoder.getDistance());
+          .add("BR Distance", backRightEncoder.getDistance());
           //SmartDashboard.putNumber("Back Right Encoder Distance", backRightEncoder.getDistance());
         encoderBRLayout 
-          .add("Rate", backRightEncoder.getRate());
+          .add("BR Rate", backRightEncoder.getRate());
           //SmartDashboard.putNumber("Back Right Encoder Rate", backRightEncoder.getRate());
         encoderBRLayout 
-          .add("Forward?", backRightEncoder.getDirection())
+          .add("BR Forward?", backRightEncoder.getDirection())
           .withWidget(BuiltInWidgets.kToggleSwitch);
           //SmartDashboard.putBoolean("Back Right Encoder Forward", backRightEncoder.getDirection()); //is this useful?
 
@@ -305,7 +331,7 @@ public class Drivetrain extends SubsystemBase {
     //Gyro tab entries
     ShuffleboardTab gyroTab = Shuffleboard.getTab("GyroTab");
     ShuffleboardLayout headingLayout = 
-      gyroTab.getLayout("Heading", BuiltInLayouts.kGrid)
+      gyroTab.getLayout("Gyro Heading", BuiltInLayouts.kGrid)
              .withPosition(0, 0);
     
         headingLayout
@@ -326,15 +352,15 @@ public class Drivetrain extends SubsystemBase {
              .withPosition(2, 0);
 
         displacementLayout
-          .add("X", gyro.getDisplacementX());
+          .add("Disp X", gyro.getDisplacementX());
           //SmartDashboard.putNumber("Gyro Displacement X", gyro.getDisplacementX());
 
         displacementLayout
-          .add("Y", gyro.getDisplacementY());
+          .add("Disp Y", gyro.getDisplacementY());
           //SmartDashboard.putNumber("Gyro Displacement Y", gyro.getDisplacementY());
 
         displacementLayout
-          .add("Z", gyro.getDisplacementZ());
+          .add("Disp Z", gyro.getDisplacementZ());
           //SmartDashboard.putNumber("Gyro Displacement Z", gyro.getDisplacementZ());
 
     ShuffleboardLayout yprLayout =
@@ -358,15 +384,15 @@ public class Drivetrain extends SubsystemBase {
              .withPosition(6, 0);
 
         velocityLayout
-          .add("X", gyro.getVelocityX());
+          .add("Vel X", gyro.getVelocityX());
           //SmartDashboard.putNumber("Gyro Velocity X", gyro.getVelocityX());
 
         velocityLayout
-          .add("Y", gyro.getVelocityY());
+          .add("Vel Y", gyro.getVelocityY());
           //SmartDashboard.putNumber("Gyro Velocity Y", gyro.getVelocityY());
 
         velocityLayout
-          .add("Z", gyro.getVelocityZ());
+          .add("Vel Z", gyro.getVelocityZ());
           //SmartDashboard.putNumber("Gyro Velocity Z", gyro.getVelocityZ());
 
     //Drive Tab entries
