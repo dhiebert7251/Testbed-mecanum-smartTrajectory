@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -50,6 +53,10 @@ public class Drivetrain extends SubsystemBase {
       new MecanumDriveOdometry(PhysicalConstants.kDriveKinematics,
       gyro.getRotation2d(),
       new MecanumDriveWheelPositions());  
+
+  private ShuffleboardTab encoderTab, gyroTab, driveTab, driverCameraTab;
+
+  private NetworkTableInstance ntInstance;
 
 
   public Drivetrain() {
@@ -238,94 +245,105 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void telemetry(){
-    //Shuffleboard.selectTab("DriveTab");
-    //Shuffleboard.selectTab("GyroTab");
-    //Shuffleboard.selectTab("PowerTab");
-   
+  
+    //ntInstance = NetworkTableInstance.getDefault();
+
     // Update telemetry 
     Shuffleboard.update();
-/*
-    //Encoder Tab entries
-    ShuffleboardTab encoderTab = Shuffleboard.getTab("EncoderTab");
-    ShuffleboardLayout encoderFLLayout = 
-      encoderTab.getLayout("Front Left Encoder", BuiltInLayouts.kList)
-             .withPosition(0, 0);
-    
-        encoderFLLayout
-          .add("Front Left Raw", frontLeftEncoder.getRaw());
-          //SmartDashboard.putNumber("Left Encoder Raw", frontLeftEncoder.getRaw());
-        encoderFLLayout
-          .add("FL Distance Per Pulse", frontLeftEncoder.getDistancePerPulse());
-        encoderFLLayout
-          .add("FL Distance", frontLeftEncoder.getDistance());
-          //SmartDashboard.putNumber("Left Encoder Distance", frontLeftEncoder.getDistance());
-        encoderFLLayout
-          .add("FL Rate", frontLeftEncoder.getRate());
-          //SmartDashboard.putNumber("Left Encoder Rate", frontLeftEncoder.getRate());
-        encoderFLLayout
-          .add("FL Forward?", frontLeftEncoder.getDirection())
-          .withWidget(BuiltInWidgets.kToggleSwitch);
-          //SmartDashboard.putBoolean("Left Encoder Forward", frontLeftEncoder.getDirection()); //is this useful?
 
-    ShuffleboardLayout encoderFRLayout = 
-      encoderTab.getLayout("Front Right Encoder", BuiltInLayouts.kList)
-                 .withPosition(2, 0);
+    encoderTab = Shuffleboard.getTab("EncoderTab");
 
-        encoderFRLayout
-          .add("FR Raw", frontRightEncoder.getRaw());
-          //SmartDashboard.putNumber("Right Encoder Raw", frontRightEncoder.getRaw());
-        encoderFRLayout
-         .add("FR Distance Per Pulse", frontRightEncoder.getDistancePerPulse());
-        encoderFRLayout
-          .add("FR Distance", frontRightEncoder.getDistance());
-          //SmartDashboard.putNumber("Right Encoder Distance", frontRightEncoder.getDistance());
-        encoderFRLayout
-          .add("FR Rate", frontRightEncoder.getRate());
-          //SmartDashboard.putNumber("Right Encoder Rate", frontRightEncoder.getRate());
-        encoderFRLayout
-          .add("FR Forward?", frontRightEncoder.getDirection())
-          .withWidget(BuiltInWidgets.kToggleSwitch);
-          //SmartDashboard.putBoolean("Right Encoder Forward", frontRightEncoder.getDirection()); //is this useful?
+    ShuffleboardLayout frontLeftEncoderLayout = encoderTab //if this works switch the rest
+      .getLayout("Front Left Encoder", BuiltInLayouts.kList)
+      .withPosition(0,0)
+      .withSize(2,2)
+      .withProperties(Map.of("Label Position", "TOP"));
 
-    ShuffleboardLayout encoderBLLayout = 
-      encoderTab.getLayout("Back Left Encoder", BuiltInLayouts.kList)
-                .withPosition(4, 0);
-    
-        encoderBLLayout      
-          .add("BL Raw", backLeftEncoder.getRaw());
-          //SmartDashboard.putNumber("Back Left Encoder Raw", backLeftEncoder.getRaw());
-        encoderBLLayout
-          .add("Distance Per Pulse", backLeftEncoder.getDistancePerPulse());
-        encoderBLLayout
-          .add("Distance", backLeftEncoder.getDistance());
-          //SmartDashboard.putNumber("Back Left Encoder Distance", backLeftEncoder.getDistance());
-        encoderBLLayout
-          .add("Rate", backLeftEncoder.getRate());
-          //SmartDashboard.putNumber("Back Left Encoder Rate", backLeftEncoder.getRate());
-        encoderBLLayout
-          .add("Forward?", backLeftEncoder.getDirection())
-          .withWidget(BuiltInWidgets.kToggleSwitch);
-          //SmartDashboard.putBoolean("Back Left Encoder Forward", backLeftEncoder.getDirection()); //is this useful?
+      frontLeftEncoderLayout
+        .add("Raw", frontLeftEncoder.getRaw())
+        .withWidget(BuiltInWidgets.kTextView);
+      frontLeftEncoderLayout
+        .add("Distance Per Pulse", frontLeftEncoder.getDistancePerPulse())
+        .withWidget(BuiltInWidgets.kTextView);
+      frontLeftEncoderLayout
+        .add("Distance", frontLeftEncoder.getDistance())
+        .withWidget(BuiltInWidgets.kTextView);
+      frontLeftEncoderLayout
+        .add("Forward?", frontLeftEncoder.getDirection())
+        .withWidget(BuiltInWidgets.kToggleSwitch);
 
-    ShuffleboardLayout encoderBRLayout = 
-      encoderTab.getLayout("Back Right Encoder", BuiltInLayouts.kList)
-                .withPosition(6, 0);
-        
-        encoderBRLayout        
-          .add("BR Raw", backRightEncoder.getRaw());
-          //SmartDashboard.putNumber("Back Right Encoder Raw", backRightEncoder.getRaw());
-        encoderBRLayout 
-          .add("BR Distance Per Pulse", backRightEncoder.getDistancePerPulse());
-        encoderBRLayout 
-          .add("BR Distance", backRightEncoder.getDistance());
-          //SmartDashboard.putNumber("Back Right Encoder Distance", backRightEncoder.getDistance());
-        encoderBRLayout 
-          .add("BR Rate", backRightEncoder.getRate());
-          //SmartDashboard.putNumber("Back Right Encoder Rate", backRightEncoder.getRate());
-        encoderBRLayout 
-          .add("BR Forward?", backRightEncoder.getDirection())
+
+    ShuffleboardLayout backLeftEncoderLayout = Shuffleboard.getTab("EncoderTab")
+      .getLayout("back Left Encoder", BuiltInLayouts.kList)
+      .withPosition(0,3)
+      .withSize(2,2)
+      .withProperties(Map.of("Label Position", "TOP"));
+
+      backLeftEncoderLayout
+        .add("Raw",backLeftEncoder.getRaw())
+        .withWidget(BuiltInWidgets.kTextView);
+      backLeftEncoderLayout
+        .add("Distance Per Pulse", backLeftEncoder.getDistancePerPulse())
+        .withWidget(BuiltInWidgets.kTextView);
+      backLeftEncoderLayout
+        .add("Distance", backLeftEncoder.getDistance())
+        .withWidget(BuiltInWidgets.kTextView);
+      backLeftEncoderLayout
+        .add("Forward?", backLeftEncoder.getDirection())
+        .withWidget(BuiltInWidgets.kToggleSwitch);
+
+
+        ShuffleboardLayout frontRightEncoderLayout = Shuffleboard.getTab("EncoderTab")
+        .getLayout("Front Right Encoder", BuiltInLayouts.kList)
+        .withPosition(3,0)
+        .withSize(2,2)
+        .withProperties(Map.of("Label Position", "TOP"));
+  
+        frontRightEncoderLayout
+          .add("Raw", frontRightEncoder.getRaw())
+          .withWidget(BuiltInWidgets.kTextView);
+        frontRightEncoderLayout
+          .add("Distance Per Pulse", frontRightEncoder.getDistancePerPulse())
+          .withWidget(BuiltInWidgets.kTextView);
+        frontRightEncoderLayout
+          .add("Distance", frontRightEncoder.getDistance())
+          .withWidget(BuiltInWidgets.kTextView);
+        frontRightEncoderLayout
+          .add("Forward?", frontRightEncoder.getDirection())
           .withWidget(BuiltInWidgets.kToggleSwitch);
-          //SmartDashboard.putBoolean("Back Right Encoder Forward", backRightEncoder.getDirection()); //is this useful?
+  
+  
+      ShuffleboardLayout backRightEncoderLayout = Shuffleboard.getTab("EncoderTab")
+        .getLayout("back Right Encoder", BuiltInLayouts.kList)
+        .withPosition(3,3)
+        .withSize(2,2)
+        .withProperties(Map.of("Label Position", "TOP"));
+  
+        backRightEncoderLayout
+          .add("Raw",backRightEncoder.getRaw())
+          .withWidget(BuiltInWidgets.kTextView);
+        backRightEncoderLayout
+          .add("Distance Per Pulse", backRightEncoder.getDistancePerPulse())
+          .withWidget(BuiltInWidgets.kTextView);
+        backRightEncoderLayout
+          .add("Distance", backRightEncoder.getDistance())
+          .withWidget(BuiltInWidgets.kTextView);
+        backRightEncoderLayout
+          .add("Forward?", backRightEncoder.getDirection())
+          .withWidget(BuiltInWidgets.kToggleSwitch);
+  
+/* 
+      gyroTab = Shuffleboard.getTab("Gyro");
+      gyroTab.add("Yaw, Pitch, Roll", BuiltInLayouts.kList)
+              .withPosition(0, 0)
+              .withSize(3, 2)
+              .withProperties(Map.of("Label position", "TOP"))
+              .add("Yaw", gyro::getYaw)
+              .withWidget(BuiltInWidgets.kTextView)
+              .add("Pitch", gyro::getPitch)
+              .withWidget(BuiltInWidgets.kTextView)
+              .add("Roll", gyro::getRoll)
+              .withWidget(BuiltInWidgets.kTextView);
 
 
     //Gyro tab entries
