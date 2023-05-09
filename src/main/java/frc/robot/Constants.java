@@ -24,6 +24,11 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    
+    public static final int kDriverLeftX = 0;
+    public static final int kDriverLeftY = 1;
+    public static final int kDriverRightX = 2;
+    public static final int kDriverRightY = 3;
 
     public static final double kControllerDeadband = 0.03;
   }

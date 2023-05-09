@@ -244,7 +244,7 @@ public class Drivetrain extends SubsystemBase {
    
     // Update telemetry 
     Shuffleboard.update();
-
+/*
     //Encoder Tab entries
     ShuffleboardTab encoderTab = Shuffleboard.getTab("EncoderTab");
     ShuffleboardLayout encoderFLLayout = 
@@ -438,7 +438,7 @@ public class Drivetrain extends SubsystemBase {
       .add("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
       //SmartDashboard.putString("Robot Location (trimmed)", getPose().getTranslation().toString().replaceFirst(".*[,]",""));
 
-
+*/
   }
   
 }

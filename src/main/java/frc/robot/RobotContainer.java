@@ -22,6 +22,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
@@ -47,8 +48,9 @@ public class RobotContainer {
 
   // Controllers
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+  private final Joystick m_driverController =
+    new Joystick(OperatorConstants.kDriverControllerPort);
 
 
   // A chooser for autonomous commands
@@ -73,9 +75,9 @@ public class RobotContainer {
         // Right stick rotation
         new DriveWithJoysticks(
           m_driveTrain, 
-          () -> -m_driverController.getLeftY(),  //TODO:  should this be - ?
-          () -> m_driverController.getLeftX(),
-          () -> m_driverController.getRightX())
+          () -> m_driverController.getRawAxis(OperatorConstants.kDriverLeftY), //does this need to be negative?
+          () -> m_driverController.getRawAxis(OperatorConstants.kDriverLeftX),
+          () -> m_driverController.getRawAxis(OperatorConstants.kDriverRightX))
       );
 
     // Add commands to the autonomous command chooser
